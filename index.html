@@ -645,6 +645,7 @@ const REGION_NAMES = {
   'WCAR':  'West & Central Africa Region',
 };
 const REGION_ORDER = ['EAPR', 'ECAR', 'ESAR', 'LACR', 'MENAR', 'SAR', 'WCAR'];
+const HIDDEN_REGIONS = new Set(['HQ']);
 
 function fmtDateRange(s, e) {
   if (!s && !e) return '—';
@@ -1023,8 +1024,8 @@ async function main() {
   select.innerHTML = '';
   select.disabled = false;
 
-  const regionsInUse = REGION_ORDER.filter(r => regionGroups[r]).concat(
-    Object.keys(regionGroups).filter(r => !REGION_ORDER.includes(r)).sort()
+  const regionsInUse = REGION_ORDER.filter(r => regionGroups[r] && !HIDDEN_REGIONS.has(r)).concat(
+    Object.keys(regionGroups).filter(r => !REGION_ORDER.includes(r) && !HIDDEN_REGIONS.has(r)).sort()
   );
 
   for (const region of regionsInUse) {
